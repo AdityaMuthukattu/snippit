@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .code-block {
+            background-color: #f6f8fa;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            overflow-x: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #e2e8f0;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .copy-button:hover {
+            background-color: #cbd5e0;
+        }
+
+        .header-large {
+            font-weight: 300;
+            font-size: 2.25rem;
+            margin-left: 10rem;
+            margin-right: 10rem;
+            letter-spacing: -0.025em;
+        }
+
+        .header-medium {
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            margin-left: 10rem;
+            margin-right: 10rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans leading-relaxed text-gray-800">
+
+    <div class="container mx-48 my-10 p-6 bg-white rounded-lg shadow-md max-w-screen">
+        <div class="flex flex-col justify-between items-center mb-12">
+            <img src="Logo.jpg" alt="Logo" class="w-12 h-12">
+            <h1 class="header-large text-gray-800">Welcome to Snippet! The Educational Tool</h1>
+        </div>
+
+        <section class="section">
+            <h3 class="header-medium text-xl font-medium text-gray-800">1. Get Comfortable with Website Structure
+            </h3>
+            <p>You can introduce your students to the basic structure of websites. By using something they are
+                already familiar with, such as existing websites, you can seamlessly integrate coding concepts.</p>
+        </section>
+
+        <section class="section">
+            <h3 class="header-medium text-xl font-medium text-gray-800">2. Learn About Different Components</h3>
+            <p class="pb-4">Students can access the app through a side panel next to the website. This panel
+                provides explanations of different components as they hover and click through them, making it easier
+                to learn about HTML and CSS in real-time.</p>
+            <p class="pb-4">Example:</p>
+            <!-- Code Snippet -->
+            <div class="code-block">
+                <button class="copy-button">Copy</button>
+                <code>
+                        &lt;div class="container"&gt;<br>
+                        &nbsp;&nbsp;&lt;h1&gt;Hello, World!&lt;/h1&gt;<br>
+                        &nbsp;&nbsp;&lt;p&gt;This is a simple example of HTML code.&lt;/p&gt;<br>
+                        &lt;/div&gt;
+                    </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h3 class="header-medium text-xl font-medium text-gray-800">3. Explore and Edit HTML</h3>
+            <p>Students can delete certain elements of a website or customize the colors of those elements using
+                HTML and CSS. This hands-on approach makes learning more interactive and engaging.</p>
+        </section>
+
+        <section class="section">
+            <h3 class="header-medium text-xl font-medium text-gray-800">4. Ask Questions</h3>
+            <p>If students don’t understand something, they can ask their questions to Snippet. It will do its best
+                to answer your questions accurately and efficiently. This ensures they get the help they need,
+                tailored to what they are working on.</p>
+        </section>
+
+        <section class="section">
+            <h3 class="header-medium text-xl font-medium text-gray-800">5. Hover to Understand Code</h3>
+            <p>When users hover over parts of the website, the side panel will display the HTML code for that
+                element. Using a picker, they can get an explanation of the code, which helps demystify how websites
+                are built.</p>
+        </section>
+
+        <section class="section">
+            <h3 class="header-medium text-xl font-medium text-gray-800">6. Manipulate the DOM</h3>
+            <p>You can encourage students to learn by manipulating the DOM (Document Object Model). This allows them
+                to see the immediate effects of their changes and understand how websites respond to code.</p>
+        </section>
+    </div>
+    </div>
+
+</body>
+
+</html>
