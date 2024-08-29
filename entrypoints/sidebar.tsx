@@ -5,7 +5,7 @@ import {IoIosSettings} from "react-icons/io";
 import {RiDashboardFill} from "react-icons/ri";
 
 export enum SidebarType {
-    'home' = 'home',
+    'home' = 'Snippet',
     'settings' = 'settings'
 }
 
