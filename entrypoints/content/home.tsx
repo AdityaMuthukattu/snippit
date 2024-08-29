@@ -27,7 +27,6 @@ export function Home() {
       url: "https://ui.shadcn.com/",
     },
   ];
-  const wizard = browser.runtime.getURL("/wizard.html");
   return (
     <div className="grid gap-4">
       <div className="flex flex-col gap-4 min-h-screen p-4">
