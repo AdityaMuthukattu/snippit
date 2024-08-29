@@ -22,6 +22,7 @@
     "@radix-ui/react-scroll-area": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@thedutchcoder/postcss-rem-to-px": "^0.0.2",
+    "@types/react-router-dom": "^5.3.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "i18next": "^23.11.1",
