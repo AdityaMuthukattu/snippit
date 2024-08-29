@@ -9,10 +9,31 @@ import { Separator } from "@/components/ui/separator";
 export function Home() {
   return (
     <div className="flex flex-col gap-2 min-h-screen">
+    {/* Added Buttons */}
+    <div className="flex space-x-4">
+        <Button
+            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => console.log('Picker clicked')}
+        >
+            Picker
+        </Button>
+        <Button
+            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => console.log('Refresh Page clicked')}
+        >
+            Refresh Page
+        </Button>
+        <Button
+            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+            onClick={() => console.log('Clear Chat clicked')}
+        >
+            Clear Chat
+        </Button>
+    </div>
       <ScrollArea className="rounded-md border h-40 text-left">
         <div className="flex flex-col space-y-4 p-6 pb-3">
           <h3 className="font-semibold leading-none tracking-tight text-base">
-            {"introduce"}
+            {"introduction"}
           </h3>
           <p className="text-sm max-w-lg text-balance leading-relaxed">
             {"HTML CODE GOES HERE"}
@@ -22,7 +43,7 @@ export function Home() {
       <ScrollArea className="text-left">
         <div className="flex flex-col space-y-4 p-6 pb-3">
           <h3 className="font-semibold leading-none tracking-tight text-base">
-            {"introduce"}
+            {"introduction"}
           </h3>
           <p className="text-sm max-w-lg leading-relaxed">
             {
@@ -31,7 +52,7 @@ export function Home() {
           </p>
           <p className="text-sm max-w-lg  leading-relaxed">
             {
-              "I'm here to help you explore, understand, and even play with the building blocks of any website. To get started select a compnent on your screen"
+              "I'm here to help you explore, understand, and even play with the building blocks of any website. To get started select a component on your screen"
             }
           </p>
         </div>
