@@ -5,31 +5,37 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-
+import ExtMessage, { MessageType, MessageFrom } from "@/entrypoints/types.ts";
 export function Home() {
+  const startPicker = async () => {
+    await browser.runtime.sendMessage({
+      messageType: MessageType.clickExtIcon,
+      content: "pick",
+    });
+  };
   return (
     <div className="flex flex-col gap-2 min-h-screen">
-    {/* Added Buttons */}
-    <div className="flex space-x-4">
+      {/* Added Buttons */}
+      <div className="flex space-x-4">
         <Button
-            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => console.log('Picker clicked')}
+          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+          onClick={startPicker}
         >
-            Picker
+          Picker
         </Button>
         <Button
-            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => console.log('Refresh Page clicked')}
+          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+          onClick={() => window.location.reload()}
         >
-            Refresh Page
+          Refresh Page
         </Button>
         <Button
-            className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => console.log('Clear Chat clicked')}
+          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+          onClick={() => console.log("Clear Chat clicked")}
         >
-            Clear Chat
+          Clear Chat
         </Button>
-    </div>
+      </div>
       <ScrollArea className="rounded-md border h-40 text-left">
         <div className="flex flex-col space-y-4 p-6 pb-3">
           <h3 className="font-semibold leading-none tracking-tight text-base">
