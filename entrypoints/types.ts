@@ -1,25 +1,26 @@
 export enum MessageType {
-    clickExtIcon = "clickExtIcon",
-    changeTheme = "changeTheme",
-    changeLocale = "changeLocale"
+  clickExtIcon = "clickExtIcon",
+  changeTheme = "changeTheme",
+  changeLocale = "changeLocale",
+  html = "html",
 }
 
 export enum MessageFrom {
-    contentScript = "contentScript",
-    background = "background",
-    popUp = "popUp",
-    sidePanel = "sidePanel",
+  contentScript = "contentScript",
+  background = "background",
+  popUp = "popUp",
+  sidePanel = "sidePanel",
 }
 
 class ExtMessage {
-    content?: string;
-    from?: MessageFrom;
+  content?: string;
+  from?: MessageFrom;
 
-    constructor(messageType: MessageType) {
-        this.messageType = messageType;
-    }
+  constructor(messageType: MessageType) {
+    this.messageType = messageType;
+  }
 
-    messageType: MessageType;
+  messageType: MessageType;
 }
 
 export default ExtMessage;

@@ -89,11 +89,13 @@ export default () => {
   }
 
   function selectElement(event: MouseEvent) {
+    console.log("selectElement called");
     event.preventDefault();
     event.stopPropagation();
+    console.log("Event propagation stopped");
     const element = event.target as HTMLElement;
     // Send the selected element's details back
-    const message = new ExtMessage(MessageType.clickExtIcon);
+    const message = new ExtMessage(MessageType.html);
     message.content = element.outerHTML;
     message.from = MessageFrom.contentScript;
 
