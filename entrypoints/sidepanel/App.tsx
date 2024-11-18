@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.module.css";
 import "../../assets/main.css";
-import Sidebar, { SidebarType } from "@/entrypoints/sidebar.tsx";
 import { browser } from "wxt/browser";
 import ExtMessage, { MessageType } from "@/entrypoints/types.ts";
 import { Button } from "@/components/ui/button.tsx";
@@ -10,7 +9,11 @@ import { Home } from "@/entrypoints/sidepanel/home.tsx";
 import { SettingsPage } from "@/entrypoints/sidepanel/settings.tsx";
 import { useTheme } from "@/components/theme-provider.tsx";
 import { useTranslation } from "react-i18next";
-import Header from "@/entrypoints/sidepanel/header.tsx";
+
+enum SidebarType {
+  "home" = "Snippit",
+  "settings" = "settings",
+}
 
 export default () => {
   const [showButton, setShowButton] = useState(false);
@@ -46,20 +49,18 @@ export default () => {
     initI18n();
   }, []);
 
+  const handleNavigation = (type: SidebarType) => {
+    setSidebarType(type);
+    setHeadTitle(type);
+  };
+
   return (
     <div className={theme}>
       {
         <div className="fixed top-0 right-0 h-screen w-full bg-background z-[1000000000000] rounded-l-xl shadow-2xl">
-          <Header headTitle={headTitle} />
-          <Sidebar
-            sideNav={(sidebarType: SidebarType) => {
-              setSidebarType(sidebarType);
-              setHeadTitle(sidebarType);
-            }}
-          />
-          <main className="mr-14 grid gap-4 p-4 md:gap-8 md:p-8">
-            {sidebarType === SidebarType.home && <Home />}
-            {sidebarType === SidebarType.settings && <SettingsPage />}
+          <main className="grid gap-4 p-4 md:gap-8">
+            {sidebarType === SidebarType.home && <Home onNavigate={handleNavigation} />}
+            {sidebarType === SidebarType.settings && <SettingsPage onNavigate={handleNavigation} />}
           </main>
         </div>
       }

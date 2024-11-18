@@ -9,19 +9,30 @@ import ExtMessage, { MessageType, MessageFrom } from "@/entrypoints/types.ts";
 import Header from "@/entrypoints/content/header.tsx";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/theme-provider.tsx";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Crosshair } from "lucide-react";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/components/prism-markup";
 
 export default () => {
   const [showContent, setShowContent] = useState(true);
-  const [showButton, setShowButton] = useState(false);
-  const [showCard, setShowCard] = useState(false);
   const [sidebarType, setSidebarType] = useState<SidebarType>(SidebarType.home);
   const [headTitle, setHeadTitle] = useState("home");
-  const [buttonStyle, setButtonStyle] = useState<any>();
-  const [cardStyle, setCardStyle] = useState<any>();
-  const cardRef = useRef<HTMLDivElement>(null);
   const { i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [isPicking, setIsPicking] = useState(false);
+  const [selectedElement, setSelectedElement] = useState<string | null>(null);
+  const isPickingRef = useRef(false);
+  const lastHighlightedRef = useRef<HTMLElement | null>(null);
 
   async function initI18n() {
     let data = await browser.storage.local.get("i18n");
@@ -30,121 +41,104 @@ export default () => {
     }
   }
 
-  function domLoaded() {
-    console.log("dom loaded");
-  }
-  const livListener = (event: MouseEvent) => {
-    const hoveredElement = event.target as HTMLElement;
+  function handleMouseMove(event: MouseEvent) {
+    if (!isPickingRef.current) return;
 
-    // Create or select the tooltip element
-    let tooltip = document.getElementById("html-tooltip");
-    if (!tooltip) {
-      tooltip = document.createElement("div");
-      tooltip.id = "html-tooltip";
-      document.body.appendChild(tooltip);
+    // Remove highlight from previous element
+    if (lastHighlightedRef.current) {
+      lastHighlightedRef.current.style.outline = "";
     }
 
-    // Get and set the HTML content of the hovered element
-    let elementHTML = "";
-    if (hoveredElement) {
-      elementHTML = hoveredElement.outerHTML;
-    }
-    tooltip.textContent = elementHTML;
-
-    // Style and position the tooltip near the cursor
-    tooltip.style.position = "fixed";
-    tooltip.style.left = `${event.pageX + 10}px`;
-    tooltip.style.top = `${event.pageY + 10}px`;
-    tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
-    tooltip.style.color = "white";
-    tooltip.style.padding = "5px";
-    tooltip.style.borderRadius = "5px";
-    tooltip.style.zIndex = "10000";
-    tooltip.style.maxWidth = "300px";
-    tooltip.style.wordWrap = "break-word";
-    tooltip.style.display = "block";
-  };
-  function liv2(e: MouseEvent) {
-    // Hide the tooltip when the mouse moves out
-    const tooltip = document.getElementById("html-tooltip");
-    if (tooltip) {
-      tooltip.style.display = "none";
-    }
-  }
-  function livMode() {
-    document.addEventListener("mouseover", livListener);
-    document.addEventListener("mouseout", liv2);
-    document.addEventListener("mouseover", highlightElement);
-    document.addEventListener("mouseout", removeHighlight);
-    document.addEventListener("click", selectElement);
-  }
-  function highlightElement(event: MouseEvent) {
+    // Highlight new element
     const element = event.target as HTMLElement;
-    element.style.outline = "2px solid red";
+    element.style.outline = "2px solid #3b82f6";
+    lastHighlightedRef.current = element;
   }
 
-  function removeHighlight(event: MouseEvent) {
-    const element = event.target as HTMLElement;
-    element.style.outline = "";
-  }
+  function handleClick(event: MouseEvent) {
+    if (!isPickingRef.current) return;
 
-  function selectElement(event: MouseEvent) {
-    console.log("selectElement called");
     event.preventDefault();
     event.stopPropagation();
-    console.log("Event propagation stopped");
+
     const element = event.target as HTMLElement;
-    // Send the selected element's details back
+
+    // Send the selected element's details
     const message = new ExtMessage(MessageType.html);
     message.content = element.outerHTML;
     message.from = MessageFrom.contentScript;
-
     browser.runtime.sendMessage(message);
 
-    endPickingMode();
+    // Update selected element for display
+    setSelectedElement(element.outerHTML);
+
+    // Clean up and exit picking mode
+    stopPicking();
   }
 
-  function endPickingMode() {
-    document.removeEventListener("mouseover", livListener);
-    // document.removeEventListener("mouseout", liv2);
-    document.removeEventListener("mouseover", highlightElement);
-    // document.removeEventListener("mouseout", removeHighlight);
-    document.removeEventListener("click", selectElement);
+  function startPicking() {
+    isPickingRef.current = true;
+    setIsPicking(true);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("click", handleClick, true);
+    document.body.style.cursor = "crosshair";
+    setSelectedElement(null);
+  }
+
+  function stopPicking() {
+    isPickingRef.current = false;
     setIsPicking(false);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("click", handleClick, true);
+    document.body.style.cursor = "";
+
+    // Remove any remaining highlight
+    if (lastHighlightedRef.current) {
+      lastHighlightedRef.current.style.outline = "";
+      lastHighlightedRef.current = null;
+    }
   }
 
+  // Clean up on unmount
   useEffect(() => {
-    if (document.readyState === "complete") {
-      // load event has already fired, run your code or function here
-      console.log("dom complete");
-      domLoaded();
-    } else {
-      // load event hasn't fired, listen for it
-      window.addEventListener("load", () => {
-        // your code here
-        console.log("content load:");
-        console.log(window.location.href);
-        domLoaded();
-      });
-    }
-    browser.runtime.onMessage.addListener(
-      (message: ExtMessage, sender, sendResponse) => {
-        console.log("content:");
-        console.log(message);
-        if (
-          message.messageType === MessageType.clickExtIcon &&
-          message.content === "pick"
-        ) {
-          // startPickingMode(); // Start the element picker mode
-          livMode();
-        } else if (message.messageType === MessageType.changeLocale) {
-          i18n.changeLanguage(message.content);
-        } else if (message.messageType === MessageType.changeTheme) {
-          toggleTheme(message.content);
-        }
+    return () => {
+      if (isPicking) {
+        stopPicking();
       }
-    );
+    };
+  }, [isPicking]);
+
+  // Listen for messages from extension
+  useEffect(() => {
+    const handleMessage = async (message: ExtMessage) => {
+      console.log("Content script received message:", message);
+      if (message.messageType === MessageType.clickExtIcon) {
+        if (message.content === "pick") {
+          startPicking();
+          console.log("start picking");
+        } else if (message.content === "cancel") {
+          stopPicking();
+          console.log("cancel");
+        }
+      } else if (message.messageType === MessageType.changeLocale) {
+        i18n.changeLanguage(message.content);
+      } else if (message.messageType === MessageType.changeTheme) {
+        toggleTheme(message.content);
+      }
+    };
+
+    browser.runtime.onMessage.addListener(handleMessage);
+    return () => {
+      browser.runtime.onMessage.removeListener(handleMessage);
+    };
   }, []);
+
+  // Highlight code when selected element changes
+  useEffect(() => {
+    if (selectedElement) {
+      Prism.highlightAll();
+    }
+  }, [selectedElement]);
 
   return (
     <div className={theme}>
@@ -161,7 +155,38 @@ export default () => {
             }}
           />
           <main className="mr-14 grid gap-4 p-4">
-            {sidebarType === SidebarType.home && <Home />}
+            {sidebarType === SidebarType.home && (
+              <Card className="w-full">
+                <CardHeader>
+                  <CardTitle>Element Picker</CardTitle>
+                  <CardDescription>
+                    Click to select an element on the page
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button
+                    onClick={startPicking}
+                    disabled={isPicking}
+                    className="w-full"
+                  >
+                    <Crosshair className="mr-2 h-4 w-4" />
+                    {isPicking ? "Picking..." : "Start Picking"}
+                  </Button>
+                </CardContent>
+                {selectedElement && (
+                  <CardFooter className="flex flex-col items-start">
+                    <h3 className="text-sm font-semibold mb-2">
+                      Selected Element:
+                    </h3>
+                    <div className="w-full max-h-96 overflow-auto rounded-md bg-zinc-950 p-4">
+                      <pre className="language-markup">
+                        <code>{selectedElement}</code>
+                      </pre>
+                    </div>
+                  </CardFooter>
+                )}
+              </Card>
+            )}
             {sidebarType === SidebarType.settings && <SettingsPage />}
           </main>
         </div>

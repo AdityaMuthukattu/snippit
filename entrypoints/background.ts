@@ -26,16 +26,19 @@ export default defineBackground(() => {
       sender,
       sendResponse: (message: any) => void
     ) => {
-      console.log("background:");
-      console.log(message);
-      if (
-        message.messageType === MessageType.clickExtIcon &&
-        message.content !== "pick"
-      ) {
-        console.log(message);
-        return true;
+      console.log("background:", message);
+      if (message.messageType === MessageType.clickExtIcon) {
+        let tabs = await browser.tabs.query({
+          active: true,
+          currentWindow: true,
+        });
+        console.log(`tabs:${tabs.length}`);
+        if (tabs) {
+          for (const tab of tabs) {
+            await browser.tabs.sendMessage(tab.id!, message);
+          }
+        }
       } else if (
-        message.content === "pick" ||
         message.messageType === MessageType.changeTheme ||
         message.messageType === MessageType.changeLocale
       ) {
@@ -43,7 +46,6 @@ export default defineBackground(() => {
           active: true,
           currentWindow: true,
         });
-        console.log(`tabs:${tabs.length}`);
         if (tabs) {
           for (const tab of tabs) {
             await browser.tabs.sendMessage(tab.id!, message);
