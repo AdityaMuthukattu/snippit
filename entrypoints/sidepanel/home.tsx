@@ -120,6 +120,13 @@ export function Home({
     }
   };
 
+  const clearChat = () => {
+    setResponses([]);
+    setInputs([]);
+    setInputValue("");
+    setText("");
+  };
+
   return (
     <div className="flex flex-col h-screen w-full bg-zinc-50 dark:bg-zinc-900 relative">
       {/* Header with navigation */}
@@ -157,11 +164,10 @@ export function Home({
             </span>
           </Button>
           <Button
-            variant="outline"
-            className="flex-1 font-medium rounded-lg border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            onClick={() => console.log("Refresh Page clicked")}
+            className="flex-1 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg px-4 py-2.5 shadow-sm transition-colors"
+            onClick={clearChat}
           >
-            Clear Chat
+            <span className="truncate">Clear Chat</span>
           </Button>
         </div>
 
@@ -207,11 +213,11 @@ export function Home({
               Chat with Snippit
             </h3>
             <div className="space-y-3">
-              <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                Hi, I'm Snippet, your personal guide to the world of websites!
+              <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                Hi, I'm Snippit, your personal guide to the world of websites!
                 🎉
               </p>
-              <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
+              <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
                 I'm here to help you explore and understand any website's
                 building blocks. Select an element to get started!
               </p>
@@ -221,18 +227,20 @@ export function Home({
           {responses.map((response, index) => (
             <div
               key={index}
-              className="space-y-3 p-4 rounded-lg bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800"
+              className="space-y-3 p-4 rounded-lg bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 shadow-sm"
             >
               <div className="space-y-3">
-                <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap break-words">
+                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap break-words">
                   {response.input}
                 </p>
-                <div className="prose prose-zinc dark:prose-invert max-w-none">
+                <div className="prose prose-sm prose-zinc dark:prose-invert max-w-none">
                   <ReactMarkdown
                     components={{
                       code: ({ className, children, ...props }) => (
                         <code
-                          className={`${styles.code} ${className || ''}`}
+                          className={`${styles.code} ${
+                            className || ""
+                          } bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200`}
                           {...props}
                         >
                           {children}
@@ -254,7 +262,7 @@ export function Home({
         <form onSubmit={handleSubmit} className="px-6 py-4">
           <div className="flex items-center gap-3">
             <input
-              className="flex-1 min-w-0 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 rounded-lg shadow-sm px-4 py-2"
+              className="flex-1 min-w-0 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 rounded-lg shadow-sm px-4 py-2 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400"
               type="text"
               placeholder="Ask about this element..."
               value={inputValue}

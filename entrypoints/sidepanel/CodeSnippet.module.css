@@ -26,3 +26,16 @@
 .codeContainer::-webkit-scrollbar {
   display: none;
 }
+
+/* Override Prism default padding */
+.codeWrapper :global(pre[class*="language-"]) {
+  padding: 0.5em !important;
+  margin: 0 !important;
+  overflow: auto;
+}
+
+/* Ensure code blocks inside markdown also use the same padding */
+.code {
+  padding: 0.5em !important;
+  margin: 0 !important;
+}
