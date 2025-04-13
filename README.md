@@ -6,7 +6,8 @@ Snippit is a Chrome extension designed to introduce students to the world of cod
 
 Snippit offers a friendly, guided approach for students to explore the HTML code behind any webpage they visit. When a student interacts with Snippit, the user can use the picker to isolates the specific code snippet for the selected element and provides a simple explanation of how it works. This approach is far less daunting than the traditional "Inspect Element" feature, which can overwhelm beginners with complex and unfamiliar code.
 
-<img width="1437" alt="image" src="https://github.com/user-attachments/assets/9e4a032b-cb24-46f1-89df-fa7030fd6bf7">
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/05fd7a11-76b9-441b-9dc1-b3da85b08b53">
+
 
 
 ### Key Features
